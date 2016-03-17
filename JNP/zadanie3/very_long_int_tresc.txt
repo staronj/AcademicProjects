@@ -1,0 +1,246 @@
+Zadanie polega na zaimplementowaniu klasy VeryLongInt reprezentuj¹cej liczby
+naturalne dowolnej precyzji (d³ugie liczby) i operacji pozwalaj¹cych na
+prowadzenie obliczeñ z wykorzystaniem obiektów tej klasy.
+
+Klasa VeryLongInt powinna udostêpniaæ nastêpuj¹ce instrukcje:
+
+VeryLongInt x    - tworzy d³ug¹ liczbê równ¹ 0;
+VeryLongInt x(y) - tworzy kopiê d³ugiej liczby y (ta instrukcja powinna byæ
+                   równie¿ obs³ugiwaæ semantykê przenoszenia);
+VeryLongInt x(n) - tworzy d³ug¹ liczbê na podstawie nieujemnej liczby
+                   ca³kowitej n;
+VeryLongInt x(s) - tworzy d³ug¹ liczbê na podstawie jej dziesiêtnego zapisu
+                   w ³añcuchu s;
+
+x = y - przypisuje d³ug¹ liczbê y na d³ug¹ liczbê x (ta instrukcja powinna
+        równie¿ obs³ugiwaæ semantykê przenoszenia);
+x = n - przypisuje nieujemn¹ liczbê ca³kowit¹ n na d³ug¹ liczbê x;
+
+x.numberOfBinaryDigits() - zwraca liczbê cyfr w zapisie dwójkowym x;
+
+x += y  - dodaje d³ug¹ liczbê y do d³ugiej liczby x;
+x -= y  - odejmuje d³ug¹ liczbê y od d³ugiej liczby x;
+x *= y  - mno¿y d³ug¹ liczbê x przez d³ug¹ liczbê y;
+x /= y  - dzieli (czêœæ ca³kowita) d³ug¹ liczbê x przez d³ug¹ liczbê y;
+x %= y  - wykonuje na d³ugiej liczbie x operacjê modulo d³uga liczba y;
+x <<= i - przesuwa d³uga liczbê x o i bitów w lewo (gdzie i jest nieujemn¹ liczb¹ ca³kowit¹);
+x >>= i - przesuwa d³uga liczbê x o i bitów w prawo (gdzie i jest nieujemn¹ liczb¹ ca³kowit¹);
+
+
+x + y  - zwraca d³ug¹ liczbê bêd¹c¹ wynikiem dodawania d³ugiej liczby y do
+         d³ugiej liczby x;
+x - y  - zwraca d³ug¹ liczbê bêd¹c¹ wynikiem odejmowania d³ugiej liczby y od
+         d³ugiej liczby x;
+x * y  - zwraca d³ug¹ liczbê bêd¹c¹ wynikiem mno¿enia d³ugiej liczby x przez
+         d³ug¹ liczbê y;
+x / y  - zwraca d³ug¹ liczbê bêd¹c¹ wynikiem dzielenia (czêœæ ca³kowit¹)
+         d³ugiej liczby x przez d³ug¹ liczbê y;
+x % y  - zwraca d³ug¹ liczbê bêd¹c¹ reszt¹ z dzielenia d³ugiej liczby x przez
+         d³ug¹ liczbê y;
+x << i - zwraca wynik przesuniêcia d³ugiej liczby x o i bitów w lewo (gdzie
+         i jest nieujemn¹ liczb¹ ca³kowit¹);
+x >> i - zwraca wynik przesuniêcia d³ugiej liczby x o i bitów w prawo (gdzie
+         i jest nieujemn¹ liczb¹ ca³kowit¹).
+
+W przypadku dzielenia przez 0 lub odejmowania wiêkszej liczby od mniejszej
+rozwi¹zanie powinno implementowaæ nieliczbê (NaN) i zwracaæ j¹ w takich
+przypadkach. Jeœli jednym z argumentów jest nieliczba, wynik powinien byæ
+nieliczb¹. Metoda isValid() powinna zwracaæ false wtedy i tylko wtedy, gdy
+d³uga liczba jest nieliczb¹.
+
+x == y, x != y, x < y, x <= y, x > y, x >= y - zwraca wynik porównania dwóch
+        d³ugich liczb (i false, jeœli choæ jeden z argumentów jest NaN).
+
+Wszystkie operacje arytmetyczne i operatory porównania maj¹ równie¿ dzia³aæ
+z argumentami, które s¹ nieujemnymi liczbami ca³kowitymi, ale nie powinny
+dzia³aæ z napisami (b³¹d kompilacji).
+
+os << x - wypisuje d³ug¹ liczbê w zapisie dziesiêtnym na strumieñ os
+          (NaN, jeœli x jest NaN).
+
+B³êdem jest wypisywanie zera jako najbardziej znacz¹cej cyfry d³ugiej liczby!
+
+U¿ywanie d³ugich liczb powinno byæ równie¿ mo¿liwe w instrukcjach steruj¹cych
+przep³ywem (takich jak if(x)). W takich przypadkach fa³sz odpowiada NaN lub
+poprawnej d³ugiej liczbie równej zeru. Oprócz tego przypadku, nie jest
+dopuszczalna konwersja obiektów VeryLongInt na inne typy.
+
+Powinny równie¿ byæ dostêpne globalne niemodyfikowalne obiekty oraz
+odpowiadaj¹ce im funkcje:
+
+Zero() - zwraca obiekt reprezentuj¹cy liczbê 0;
+NaN()  - zwraca obiekt reprezentuj¹cy nieliczbê.
+
+Funkcje Zero i NaN powinny zwracaæ obiekty, których nie mo¿na modyfikowaæ
+(a próba modyfikowania powinna powodowaæ b³¹d kompilacji).
+
+Argumenty i wyniki wszystkich operatorów, metod i funkcji powinny przyjmowaæ
+wartoœci zgodne ze zwyczajowymi konwencjami w zakresie u¿ywania referencji,
+wartoœci typu const oraz obiektów statycznych.
+
+==== Przyk³ad kodu korzystaj¹cego z klasy VeryLongInt ====
+
+   {
+        VeryLongInt x = 1;
+        x /= 0;
+        assert(!x.isValid());
+    }
+
+    {
+        VeryLongInt x = 100;
+        x -= 101;
+        assert(!x.isValid());
+    }
+
+    {
+        VeryLongInt x = 23;
+        VeryLongInt y = x;
+        assert(x == y);
+    }
+
+    {
+        VeryLongInt x = 23;
+        VeryLongInt y = 32;
+        x = y;
+        assert(x == y);
+    }
+
+    {
+        VeryLongInt x = 23;
+        VeryLongInt y = 32;
+        assert(y > x);
+    }
+
+    {
+        VeryLongInt x = 23;
+        VeryLongInt y = 32;
+        assert(y >= x);
+    }
+
+    {
+        VeryLongInt x = NaN();
+        assert(!x.isValid());
+    }
+
+    {
+        VeryLongInt x = 10;
+        if (x)
+            assert(1);
+        else
+            assert(0);
+    }
+
+    {
+        VeryLongInt x = 1;
+        x <<= 123;
+        x >>= 120;
+        assert(8 == x);
+    }
+
+    {
+        VeryLongInt x = 1;
+        for (int i = 1; i <= 100; ++i)
+            x *= 2;
+        assert(x % 3 == 1);
+    }
+
+    {
+        VeryLongInt x = Zero();
+        assert(x == 0);
+    }
+
+    {
+        const int N = 100;
+        VeryLongInt x = 1;
+        for (int i = 1; i < N; ++i)
+            x *= 2;
+        assert(x.numberOfBinaryDigits() == N);
+    }
+
+    {
+        VeryLongInt x("1234567890123456789012345678901234567890");
+        VeryLongInt z = x;
+        VeryLongInt y("777777777777777777777777777777777777777");
+        x = x + y;
+        x -= y;
+        assert(x == z);
+    }
+
+    {
+        VeryLongInt x(string("12345678"));
+        VeryLongInt y(12345678U);
+        assert(x == y);
+    }
+
+    {
+        VeryLongInt x("12345678901234567890");
+        VeryLongInt y(12345678901234567890UL);
+        assert(x == y);
+        cout << y << endl;
+    }
+
+    {    
+        VeryLongInt x("1234567890123456789012345678901234567890");
+        VeryLongInt y("1204567890123456789012345678901234567890");
+        VeryLongInt z(  "30000000000000000000000000000000000000");
+        assert(z == x - y);
+    }
+
+    {
+        VeryLongInt x("10000000000");
+        VeryLongInt y("100000000000");
+        VeryLongInt z("1000000000000000000000");
+        assert(z == x * y);
+    }
+
+    {
+        const int N = 1000;
+        VeryLongInt x = 1;
+        for (int i = 2; i <= N; ++i)    
+
+            x *= i;
+        for (int i = 2; i <= N; ++i)
+            x /= i;
+        assert(x == 1);
+    }
+
+    {
+        assert(Zero().numberOfBinaryDigits() == 1);
+        assert(NaN().numberOfBinaryDigits() == 0);
+    }
+
+==== Przyk³ad kodu, który nie powinien siê kompilowaæ ====
+
+    VeryLongInt a('1'); // b³¹d kompilacji
+
+    VeryLongInt b(true); // b³¹d kompilacji
+
+    VeryLongInt c;
+    c += "123"; // b³¹d kompilacji
+
+    VeryLongInt d;
+    d -= ::std::string("123"); // b³¹d kompilacji
+
+    VeryLongInt e, f, g;
+    e * g = h; // b³¹d kompilacji
+
+    VeryLongInt h;
+    int i = h; // b³¹d kompilacji
+
+
+==== Rozwi¹zanie ====
+
+Rozwi¹zanie powinno sk³adaæ siê z dwóch plików: very_long_int.h oraz
+very_long_int.cc. Pliki te nale¿y umieœciæ w repozytorium w katalogu
+
+grupaN/zadanie3/ab123456+cd123456
+
+lub
+
+grupaN/zadanie3/ab123456+cd123456+ef123456
+
+gdzie N jest numerem grupy, a ab123456, cd123456, ef123456 s¹ identyfikatorami
+cz³onków zespo³u umieszczaj¹cego to rozwi¹zanie. Katalog z rozwi¹zaniem nie
+powinien zawieraæ innych plików, ale mo¿e zawieraæ podkatalog private, gdzie
+mo¿na umieszczaæ ró¿ne pliku, np. swoje testy. Pliki umieszczone w tym katalogu
+nie bêd¹ oceniane.
