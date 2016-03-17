@@ -1,0 +1,56 @@
+Budowanie odbywa się za pomocą make,
+skompilowane programy pojawiają się w folderze build
+
+
+Opis rozwiązania.
+
+    Dlaczego takie długie?
+Rozwiązanie jest długie, gdyż jest napisane w miarę obiektowo.
+Korzystam w nim z wielu klas i modułów które napisałem przy okazji
+wcześniejscych moich projektów z języka C.
+
+Obiekty takie jak String, StringBuilder, InputStream, Vector pozwalają
+w prostszy i bezpieczniejszy sposób realizować to, z czym programiści C
+muszą się zmagać - operacje na dynamiczych tablicach czy stringach.
+
+    Opis komunikacji.
+Nie wiemy który z procesów bank czy muzeum zostanie uruchomiony jako pierwszy,
+każdy z nich próbuje więc utworzyć kolejkę, a następnie czeka na wiadomość
+od drugiego. W wiadomościach wymieniają się wiedzą (w szczególności muzeum
+dowiaduje się o liczbie firm), po handshakeu bank uruchamia firmy.
+
+Rozwiązanie używa jednej kolejki. Mogłoby to prowadzić do zakleszczenia spowodowanego
+tym, że kolejka ma ograniczony bufor. Radzimy sobie z tym tworząc w muzeum, banku i
+delegacie dodatkowy wątek nasłuchujący na konkretnym typie wiadomości (patrz plik
+message_buffer.h). Dzięki temu wszystkie komunikaty które są początkami jakichś
+protokołów komunikacji są czytane i gromadzone w wewnętrznym buforze co odciąża
+bufor kolejki wiadomości.
+
+Muzeum oraz bank działają jak serwery - czekają na wiadomości z zewnątrz i na
+nie reagują.
+Banku możemy pytać się o stan konta wybranej firmy oraz prosić go o przelew
+firma-muzeum lub muzeum-firma.
+Muzeum możemy prosić o pozwolenie na pracę, o wycenę działek oraz możemy przesyłać
+mu raport firmy.
+
+Muzeum przed zamknięciem czeka na raporty od wszystkich firm oraz potwierdzenie
+śmierci od banku.
+Bank przed śmiercią czeka na potwierdzenie śmierci od firm.
+Firma zamyka się, gdy zabraknie jej pieniędzy lub otrzyma od banku sygnał sigint.
+W czasie umierania wysyła do muzeum raport firmy oraz wysyła do banku potwierdzenie swojej
+śmierci.
+Jeśli bank otrzyma od muzeum wiadomość "SHUTDOWN" wysyła do firm sygnał sigint, czeka na
+potwierdzenia ich śmierci i sam się zamyka.
+Podczas śmierci bank wysyła do muzeum potwierdzenie swojej śmierci.
+Gdy muzeum otrzyma sygnał sigint lub spostrzegnie, że wszystkie artefakty zostały
+wydobyte prosi bank o zamkięcie poprzez wysłanie mu komunikatu "SHUTDOWN".
+
+Jeśli wszystkie firmy skończą działalność bank się zamknie, gdyż otrzyma od
+firm potwierdzenie śmierci oraz muzeum się zamknie, gdyż otrzyma raporty i potwierdzenie
+śmierci od banku.
+
+
+Istotniejsze pliki:
+constants.h - Plik z opisem komunikatów wysyłanych między procesami.
+message_buffer.h - Monitor MessageBuffer zapewniający ciągłe czytanie z kolejki.
+foldery firma/muzeum/bank - implementacje firmy/muzeum/banku
